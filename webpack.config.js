@@ -1,12 +1,38 @@
 module.exports = {
-  entry: './entry.js',
+  entry: './src/js/entry.js',
   output: {
     path: __dirname,
-    filename: 'bundle.js'
+    filename: 'src/bundle.js'
   },
   module: {
-    loaders: [
-      { test: /\.sass$/, loader: 'style!css!sass' }
+    rules: [
+      {
+         test: /\.css$/,
+         use: [
+           'style-loader',
+           'css-loader'
+         ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: [[
+            'env', {
+              targets: {
+                browsers: ['last 2 versions']
+              }
+            }
+          ]]
+        }
+      }
     ]
   }
 };
